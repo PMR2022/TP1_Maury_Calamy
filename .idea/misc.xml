@@ -3,10 +3,18 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+<<<<<<< HEAD
         <entry key="..\:/Travail/PMR/TP1/TP1_Maury_Calamy/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2455" />
         <entry key="..\:/Travail/PMR/TP1/TP1_Maury_Calamy/app/src/main/res/layout/activity_bis.xml" value="0.271875" />
         <entry key="..\:/Travail/PMR/TP1/TP1_Maury_Calamy/app/src/main/res/layout/activity_main.xml" value="0.12552083333333333" />
         <entry key="..\:/Travail/PMR/TP1/TP1_Maury_Calamy/app/src/main/res/layout/test.xml" value="0.1" />
+=======
+        <entry key="..\:/Users/Victor Calamy/StudioProjects/TP1_Maury_Calamy/app/src/main/res/layout/activity_main.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/Victor Calamy/StudioProjects/TP1_Maury_Calamy/app/src/main/res/layout/activity_settings.xml" value="0.18802083333333333" />
+        <entry key="..\:/Users/Victor Calamy/StudioProjects/TP1_Maury_Calamy/app/src/main/res/layout/choix_list_activity.xml" value="0.67" />
+        <entry key="..\:/Users/Victor Calamy/StudioProjects/TP1_Maury_Calamy/app/src/main/res/menu/menu.xml" value="0.33" />
+        <entry key="..\:/Users/victo/Desktop/devoirsCentrale/PMR/Tp1_Maury_Calamy/app/src/main/res/layout/activity_main.xml" value="0.5" />
+>>>>>>> master
       </map>
     </option>
   </component>
