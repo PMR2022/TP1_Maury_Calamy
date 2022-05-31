@@ -5,34 +5,20 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Button
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
-class ChoixListActivity : AppCompatActivity() {
-    private lateinit var user : User
+class ShowListActivity: AppCompatActivity()  {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.choix_list_activity)
+        val liste = intent.getStringExtra("liste").toString()
+        // TODO : afficher les items de la liste "liste"
 
-        val pseudo = intent.getStringExtra("pseudo").toString()
-        //Toast.makeText(this, pseudo, Toast.LENGTH_LONG).show() //test pseudo
-        // TODO : récupérer le user à partir du pseudo et l'afficher
-
-        val btnOk : Button = findViewById(R.id.btnOkNewList)
+        val btnOk : Button = findViewById(R.id.btnOkNewItem)
         btnOk.setOnClickListener {
 
-            // TODO : ajouter une liste à l'user
+            // TODO : ajouter un Item à la liste
         }
-
-        // TODO : écouter les click sur les différentes listes et ouvrir ShowListActivity en lui passant le nom de la liste en argument
-
-        /*          bout de code utile pour ça
-
-          val showListActivity = Intent(this,ShowListActivity::class.java)
-          choixListActivity.putExtra("liste", LeNomDeLaListeCliquée)
-          startActivity(showListActivity)
-
-        */
 
 
     }

@@ -31,6 +31,10 @@
         <activity
             android:name=".SettingActivity">
         </activity>
+
+        <activity
+            android:name=".ShowListActivity">
+        </activity>
     </application>
 
 </manifest>

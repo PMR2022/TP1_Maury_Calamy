@@ -5,23 +5,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
-    <EditText
-        android:id="@+id/nouvelleList"
-        android:layout_width="312dp"
-        android:layout_height="47dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Nouvelle Liste"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btnOkNewList"
-        app:layout_constraintStart_toStartOf="parent" />
-
     <Button
-        android:id="@+id/btnOkNewList"
+        android:id="@+id/btnOkNewItem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="ok"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
+    <EditText
+        android:id="@+id/nouvelItem"
+        android:layout_width="312dp"
+        android:layout_height="47dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Nouvel Item"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btnOkNewList"
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
