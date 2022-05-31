@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.preference.PreferenceManager
 import android.widget.Button
 import android.widget.EditText
+import com.google.gson.Gson
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -18,4 +19,9 @@ class MainActivity : AppCompatActivity() {
 
         }
     }
+    var listePseudo = emptyArray<Pseudo>();
+    var gson= Gson();
+    var jsonString = gson.toJson(listePseudo);
+
+
 }
