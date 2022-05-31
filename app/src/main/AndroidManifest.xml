@@ -27,6 +27,10 @@
         <activity
             android:name=".ChoixListActivity">
         </activity>
+
+        <activity
+            android:name=".SettingActivity">
+        </activity>
     </application>
 
 </manifest>
