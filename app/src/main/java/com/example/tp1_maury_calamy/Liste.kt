@@ -1,3 +1,3 @@
 package com.example.tp1_maury_calamy
 
-data class Liste (val name: String, val listItem: ArrayList<Item>)
+data class Liste (var name: String, var listItem: ArrayList<Item>)

@@ -5,19 +5,26 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Button
+import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 
 class ShowListActivity: AppCompatActivity()  {
+    private lateinit var liste : Liste
+    private lateinit var itemDescription : EditText
+    private lateinit var newItem : Item
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.choix_list_activity)
-        val liste = intent.getStringExtra("liste").toString()
-        // TODO : afficher les items de la liste "liste"
+        setContentView(R.layout.activity_show_list)
 
+        itemDescription = findViewById(R.id.nouvelItem)
+        val listeName = intent.getStringExtra("liste").toString()
+        // TODO : afficher les items de la liste "liste", pour l'instant je considère qu'elle est vide
+        liste.name = listeName
+        liste.listItem = ArrayList()  //pareil à changer avec gson
         val btnOk : Button = findViewById(R.id.btnOkNewItem)
         btnOk.setOnClickListener {
-
-            // TODO : ajouter un Item à la liste
+            newItem.description = itemDescription.text.toString()
+            liste.listItem.add(newItem)
         }
 
 

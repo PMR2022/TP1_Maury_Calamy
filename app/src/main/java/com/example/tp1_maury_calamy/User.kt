@@ -1,3 +1,3 @@
 package com.example.tp1_maury_calamy
 
-data class User (val name:String, val listActivite: ArrayList<Liste>)
+data class User  (var name:String, var listActivite: ArrayList<Liste>)
