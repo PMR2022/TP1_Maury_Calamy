@@ -1,5 +1,6 @@
 package com.example.tp1_maury_calamy
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.preference.PreferenceManager
@@ -16,13 +17,15 @@ class MainActivity : AppCompatActivity() {
         val preferences = PreferenceManager.getDefaultSharedPreferences(this)
         val btnOk : Button = findViewById(R.id.btnOk)
         btnOk.setOnClickListener {
-            Log.d("TAG","btn marche") //Test clickListener
+
             // On commence par modifier les préférences
             val editeur = preferences.edit()
             editeur.putString("Pseudo", indicPseudo.text.toString())
             editeur.commit()
 
             // Et après on change d'activité
+            val choixListActivity = Intent(this,ChoixListActivity::class.java)
+            startActivity(choixListActivity)
         }
     }
 }
