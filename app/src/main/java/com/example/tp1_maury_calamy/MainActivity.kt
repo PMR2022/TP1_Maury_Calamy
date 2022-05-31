@@ -6,6 +6,10 @@ import android.preference.PreferenceManager
 import android.widget.Button
 import android.widget.EditText
 import com.google.gson.Gson
+import java.io.File
+import java.io.FileWriter
+import java.io.PrintWriter
+import java.nio.charset.Charset
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,8 +24,11 @@ class MainActivity : AppCompatActivity() {
         }
     }
     var listePseudo = emptyArray<Pseudo>();
+    var jsonString: String? = null;
     var gson= Gson();
-    var jsonString = gson.toJson(listePseudo);
+    fun updateJson(){
+        jsonString = gson.toJson(listePseudo);
+    }
 
 
 }
