@@ -6,17 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/Title"
-        android:layout_width="413dp"
-        android:layout_height="38dp"
-        android:layout_margin="10dp"
-        android:background="#ACAAAA"
-        android:gravity="center_vertical"
-        android:text=" Main Activity"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+
 
     <EditText
         android:id="@+id/indicPseudo"
