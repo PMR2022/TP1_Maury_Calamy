@@ -6,11 +6,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.util.Log
-import android.view.Menu
-import android.view.MenuItem
-import android.widget.Button
-import android.widget.EditText
-import android.widget.Toast
+import android.view.*
+import android.widget.*
+import androidx.recyclerview.widget.RecyclerView
 
 class MainActivity : AppCompatActivity() {
 
@@ -20,17 +18,17 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
+        Log.d("myActivity", "création")
         indicPseudo = findViewById(R.id.indicPseudo) //Variable contenant le pseudo renseigné
         preferences = PreferenceManager.getDefaultSharedPreferences(this)
         val btnOk : Button = findViewById(R.id.btnOk)
         btnOk.setOnClickListener {
-
+            Log.d("myActivity", "appuiBtn")
             // On commence par modifier les préférences
             val editeur = preferences.edit()
             editeur.putString("Pseudo", indicPseudo.text.toString())
             editeur.commit()
-
+            Log.d("myActivity", "chgt Activité")
             // Et après on change d'activité
             val choixListActivity = Intent(this,ChoixListActivity::class.java)
             choixListActivity.putExtra("pseudo", indicPseudo.text.toString())
@@ -67,5 +65,48 @@ class MainActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
 
     }
+
+    class ItemAdapter(
+        private val dataSet: List<Item>
+    ) : RecyclerView.Adapter<ItemAdapter.ItemViewHolder>() {
+
+        override fun getItemCount(): Int = dataSet.size
+
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
+            val itemView =
+                    LayoutInflater.from(parent.context).inflate(R.layout.item_layout, parent, false)
+
+            return ItemViewHolder(itemView = itemView)
+        }
+
+        override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
+            holder.bind(item = dataSet[position])
+        }
+        /*fun provideDataSet(): List<Item> {
+            val result = mutableListOf<Item>()
+            repeat(1_000) { intex ->
+                val item = Item(
+                    imageRes = R.mipmap.ic_launcher,
+                    title = "Titre $intex",
+                    subTitle = "Sous-Titre $intex",
+                )
+
+                result.add(item)
+            }
+            return result
+        }*/
+
+        class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+
+            private val textItem = itemView.findViewById<TextView>(R.id.textItem)
+            private val checkBox = itemView.findViewById<CheckBox>(R.id.checkBox)
+
+            fun bind(item: Item) {
+                textItem.text = item.description
+                checkBox.setChecked() =item.fait
+            }
+
+        }
 }
+
 

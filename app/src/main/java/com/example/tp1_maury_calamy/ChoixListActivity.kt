@@ -8,6 +8,8 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 
 class ChoixListActivity : AppCompatActivity() {
     private lateinit var user : User
@@ -41,7 +43,9 @@ class ChoixListActivity : AppCompatActivity() {
           startActivity(showListActivity)
 
         */
-
+        val list = findViewById<RecyclerView>(R.id.list)
+        list.adapter = ItemAdapter(dataSet = provideDataSet())
+        list.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
 
     }
 
