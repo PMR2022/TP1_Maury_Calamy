@@ -29,6 +29,6 @@
         android:id="@+id/list"
         android:layout_width="379dp"
         android:layout_height="609dp"
-        tools:layout_editor_absoluteX="-2dp"
-        tools:layout_editor_absoluteY="71dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

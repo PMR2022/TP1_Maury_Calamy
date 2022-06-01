@@ -28,11 +28,11 @@ class MainActivity : AppCompatActivity() {
             val editeur = preferences.edit()
             editeur.putString("Pseudo", indicPseudo.text.toString())
             editeur.commit()
-            Log.d("myActivity", "chgt Activité")
             // Et après on change d'activité
             val choixListActivity = Intent(this,ChoixListActivity::class.java)
             choixListActivity.putExtra("pseudo", indicPseudo.text.toString())
             startActivity(choixListActivity)
+            Log.d("myActivity", "chgt Activité")
         }
 
 
@@ -66,47 +66,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    class ItemAdapter(
-        private val dataSet: List<Item>
-    ) : RecyclerView.Adapter<ItemAdapter.ItemViewHolder>() {
 
-        override fun getItemCount(): Int = dataSet.size
-
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
-            val itemView =
-                    LayoutInflater.from(parent.context).inflate(R.layout.item_layout, parent, false)
-
-            return ItemViewHolder(itemView = itemView)
-        }
-
-        override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
-            holder.bind(item = dataSet[position])
-        }
-        /*fun provideDataSet(): List<Item> {
-            val result = mutableListOf<Item>()
-            repeat(1_000) { intex ->
-                val item = Item(
-                    imageRes = R.mipmap.ic_launcher,
-                    title = "Titre $intex",
-                    subTitle = "Sous-Titre $intex",
-                )
-
-                result.add(item)
-            }
-            return result
-        }*/
-
-        class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
-            private val textItem = itemView.findViewById<TextView>(R.id.textItem)
-            private val checkBox = itemView.findViewById<CheckBox>(R.id.checkBox)
-
-            fun bind(item: Item) {
-                textItem.text = item.description
-                checkBox.setChecked() =item.fait
-            }
-
-        }
 }
 
 
