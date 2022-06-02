@@ -42,19 +42,19 @@ class ChoixListActivity : AppCompatActivity() {
 
         */
         val listRecycl = findViewById<RecyclerView>(R.id.list) //création du recyclerView
-        listRecycl.adapter = ItemAdapter(dataSet = provideDataSet())
+        listRecycl.adapter = ListAdapter(dataSet = provideDataSet())
         listRecycl.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
 
     }
-    fun provideDataSet(): List<Item> {
-        val result = mutableListOf<Item>()
+    fun provideDataSet(): List<Liste> {
+        val result = mutableListOf<Liste>()
         repeat(10) { intex ->
-            val item = Item(
-                description = "Titre $intex",
-                fait = false,
+            val list = Liste(
+                name = "Titre $intex",
+                listItem = ArrayList(),
             )
 
-            result.add(item)
+            result.add(list)
         }
         Log.d("myActivity",result.size.toString())
         return result
@@ -81,32 +81,30 @@ class ChoixListActivity : AppCompatActivity() {
 
     }
 
-    class ItemAdapter(
-        private val dataSet: List<Item>
-    ) : RecyclerView.Adapter<ItemAdapter.ItemViewHolder>() {
+    class ListAdapter(
+        private val dataSet: List<Liste>
+    ) : RecyclerView.Adapter<ChoixListActivity.ListAdapter.ItemViewHolder>() {
 
         override fun getItemCount(): Int = dataSet.size
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
             val itemView =
-                LayoutInflater.from(parent.context).inflate(R.layout.item_layout, parent, false)
+                LayoutInflater.from(parent.context).inflate(R.layout.list_layout, parent, false)
 
             return ItemViewHolder(itemView = itemView)
         }
 
         override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
-            holder.bind(item = dataSet[position])
+            holder.bind(list = dataSet[position])
         }
 
 
         class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-            private val textItem = itemView.findViewById<TextView>(R.id.textItem)
-            private val checkBox = itemView.findViewById<CheckBox>(R.id.checkBox)
+            private val textListe = itemView.findViewById<TextView>(R.id.textListe)
 
-            fun bind(item: Item) {
-                textItem.text = item.description
-                checkBox.isChecked = item.fait
+            fun bind(list: Liste) {
+                textListe.text = list.name
             }
 
         }

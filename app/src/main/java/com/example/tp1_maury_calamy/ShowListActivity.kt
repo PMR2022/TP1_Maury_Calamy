@@ -2,11 +2,15 @@ package com.example.tp1_maury_calamy
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
+import android.util.Log
+import android.view.*
 import android.widget.Button
+import android.widget.CheckBox
 import android.widget.EditText
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 
 class ShowListActivity: AppCompatActivity()  {
     private lateinit var liste : Liste
@@ -26,7 +30,23 @@ class ShowListActivity: AppCompatActivity()  {
             liste.listItem.add(newItem)
         }
 
+        val listRecycl = findViewById<RecyclerView>(R.id.list) //création du recyclerView
+        listRecycl.adapter = ChoixListActivity.ListAdapter(dataSet = provideDataSet())
+        listRecycl.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
+    }
 
+    fun provideDataSet(): List<Liste> {
+        val result = mutableListOf<Liste>()
+        repeat(10) { intex ->
+            val list = Liste(
+                name = "Titre $intex",
+                listItem = ArrayList(),
+            )
+
+            result.add(list)
+        }
+        Log.d("myActivity", result.size.toString())
+        return result
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -47,5 +67,38 @@ class ShowListActivity: AppCompatActivity()  {
 
         return super.onOptionsItemSelected(item)
 
+    }
+
+
+
+    class ItemAdapter(
+        private val dataSet: List<Item>
+    ) : RecyclerView.Adapter<ItemAdapter.ItemViewHolder>() {
+
+        override fun getItemCount(): Int = dataSet.size
+
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
+            val itemView =
+                LayoutInflater.from(parent.context).inflate(R.layout.item_layout, parent, false)
+
+            return ItemViewHolder(itemView = itemView)
+        }
+
+        override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
+            holder.bind(item = dataSet[position])
+        }
+
+
+        class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+
+            private val textItem = itemView.findViewById<TextView>(R.id.textItem)
+            private val checkBox = itemView.findViewById<CheckBox>(R.id.checkBox)
+
+            fun bind(item: Item) {
+                textItem.text = item.description
+                checkBox.isChecked = item.fait
+            }
+
+        }
     }
 }
