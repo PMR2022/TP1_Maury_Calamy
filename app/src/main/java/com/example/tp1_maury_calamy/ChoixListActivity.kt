@@ -19,30 +19,30 @@ class ChoixListActivity : AppCompatActivity() {
         listeName = findViewById(R.id.nouvelleList)
         val pseudo = intent.getStringExtra("pseudo").toString()
         //Toast.makeText(this, pseudo, Toast.LENGTH_LONG).show() //test pseudo
+
         // TODO : récupérer le user à partir du pseudo et l'afficher, pour l'instant je me contente d'en créer un vierge
-        user.name = pseudo
-        user.listActivite = ArrayList()   // à récup avec GSON
+        user = User(pseudo, ArrayList())
 
         val btnOk: Button = findViewById(R.id.btnOkNewList)
         btnOk.setOnClickListener {
-            newListe.name = listeName.text.toString()
-            newListe.listItem = ArrayList()
+
+            newListe = Liste(listeName.text.toString(),ArrayList())
             user.listActivite.add(newListe)
-            Toast.makeText(this, user.listActivite.toString(), Toast.LENGTH_LONG).show()
+            //Toast.makeText(this, user.listActivite.toString(), Toast.LENGTH_LONG).show()
         }
 
         // TODO : écouter les click sur les différentes listes et ouvrir ShowListActivity en lui passant le nom de la liste en argument
 
-        /*          bout de code utile pour ça
+         /*         bout de code utile pour ça
 
           val showListActivity = Intent(this,ShowListActivity::class.java)
           choixListActivity.putExtra("liste", LeNomDeLaListeCliquée)
           startActivity(showListActivity)
 
         */
-        val list = findViewById<RecyclerView>(R.id.list)
-        list.adapter = ItemAdapter(dataSet = provideDataSet())
-        list.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
+        val listRecycl = findViewById<RecyclerView>(R.id.list)
+        listRecycl.adapter = ItemAdapter(dataSet = provideDataSet())
+        listRecycl.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
 
     }
     fun provideDataSet(): List<Item> {

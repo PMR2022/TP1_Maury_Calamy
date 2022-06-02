@@ -19,11 +19,10 @@ class ShowListActivity: AppCompatActivity()  {
         itemDescription = findViewById(R.id.nouvelItem)
         val listeName = intent.getStringExtra("liste").toString()
         // TODO : afficher les items de la liste "liste", pour l'instant je considère qu'elle est vide
-        liste.name = listeName
-        liste.listItem = ArrayList()  //pareil à changer avec gson
+        liste = Liste(listeName,ArrayList() )
         val btnOk : Button = findViewById(R.id.btnOkNewItem)
         btnOk.setOnClickListener {
-            newItem.description = itemDescription.text.toString()
+            newItem= Item(itemDescription.text.toString())
             liste.listItem.add(newItem)
         }
 
