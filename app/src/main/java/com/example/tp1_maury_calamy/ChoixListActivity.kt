@@ -2,6 +2,7 @@ package com.example.tp1_maury_calamy
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -40,14 +41,14 @@ class ChoixListActivity : AppCompatActivity() {
           startActivity(showListActivity)
 
         */
-        val listRecycl = findViewById<RecyclerView>(R.id.list)
+        val listRecycl = findViewById<RecyclerView>(R.id.list) //création du recyclerView
         listRecycl.adapter = ItemAdapter(dataSet = provideDataSet())
         listRecycl.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
 
     }
     fun provideDataSet(): List<Item> {
         val result = mutableListOf<Item>()
-        repeat(1_000) { intex ->
+        repeat(10) { intex ->
             val item = Item(
                 description = "Titre $intex",
                 fait = false,
@@ -55,6 +56,7 @@ class ChoixListActivity : AppCompatActivity() {
 
             result.add(item)
         }
+        Log.d("myActivity",result.size.toString())
         return result
     }
 
