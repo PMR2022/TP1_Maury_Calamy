@@ -2,51 +2,42 @@ package com.example.tp1_maury_calamy
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.*
-import android.widget.Button
-import android.widget.CheckBox
-import android.widget.EditText
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 class ShowListActivity: AppCompatActivity()  {
-    private lateinit var liste : Liste
+    private lateinit var listeToDo : ListeToDo
     private lateinit var itemDescription : EditText
-    private lateinit var newItem : Item
+    private lateinit var newItem : ItemToDo
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_show_list)
 
+        //Toast.makeText(this, "activité show liste", Toast.LENGTH_LONG).show()
         itemDescription = findViewById(R.id.nouvelItem)
         val listeName = intent.getStringExtra("liste").toString()
         // TODO : afficher les items de la liste "liste", pour l'instant je considère qu'elle est vide
-        liste = Liste(listeName,ArrayList() )
+
+        listeToDo = ListeToDo(listeName,ArrayList() )
+
+        var adapter = ItemAdapter(dataSet = listeToDo.listItem)
+        val listRecycler = findViewById<RecyclerView>(R.id.list) //création du recyclerView
+
+
+        listRecycler.adapter = adapter
+        listRecycler.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
+
         val btnOk : Button = findViewById(R.id.btnOkNewItem)
         btnOk.setOnClickListener {
-            newItem= Item(itemDescription.text.toString())
-            liste.listItem.add(newItem)
+            newItem= ItemToDo(itemDescription.text.toString())
+            listeToDo.listItem.add(newItem)
+            listRecycler.adapter!!.notifyDataSetChanged()
         }
 
-        val listRecycl = findViewById<RecyclerView>(R.id.list) //création du recyclerView
-        listRecycl.adapter = ChoixListActivity.ListAdapter(dataSet = provideDataSet())
-        listRecycl.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
-    }
 
-    fun provideDataSet(): List<Liste> {
-        val result = mutableListOf<Liste>()
-        repeat(10) { intex ->
-            val list = Liste(
-                name = "Titre $intex",
-                listItem = ArrayList(),
-            )
-
-            result.add(list)
-        }
-        Log.d("myActivity", result.size.toString())
-        return result
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -72,8 +63,10 @@ class ShowListActivity: AppCompatActivity()  {
 
 
     class ItemAdapter(
-        private val dataSet: List<Item>
+        private val dataSet: ArrayList<ItemToDo>
     ) : RecyclerView.Adapter<ItemAdapter.ItemViewHolder>() {
+
+
 
         override fun getItemCount(): Int = dataSet.size
 
@@ -89,12 +82,12 @@ class ShowListActivity: AppCompatActivity()  {
         }
 
 
-        class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        inner class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
             private val textItem = itemView.findViewById<TextView>(R.id.textItem)
             private val checkBox = itemView.findViewById<CheckBox>(R.id.checkBox)
 
-            fun bind(item: Item) {
+            fun bind(item: ItemToDo) {
                 textItem.text = item.description
                 checkBox.isChecked = item.fait
             }

@@ -2,7 +2,6 @@ package com.example.tp1_maury_calamy
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -10,9 +9,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 class ChoixListActivity : AppCompatActivity() {
-    private lateinit var user: User
+    private lateinit var user: ProfilListeToDo
     private lateinit var listeName: EditText
-    private lateinit var newListe: Liste
+    private lateinit var newListe: ListeToDo
+    private lateinit var listRecycl : RecyclerView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.choix_list_activity)
@@ -22,44 +22,40 @@ class ChoixListActivity : AppCompatActivity() {
         //Toast.makeText(this, pseudo, Toast.LENGTH_LONG).show() //test pseudo
 
         // TODO : récupérer le user à partir du pseudo et l'afficher, pour l'instant je me contente d'en créer un vierge
-        user = User(pseudo, ArrayList())
+        user = ProfilListeToDo(pseudo, ArrayList())
+
+
+        var adapter = ListAdapter(dataSet = user.listActivite)
+        listRecycl = findViewById<RecyclerView>(R.id.list) //création du recyclerView
+
+
+
+        listRecycl.adapter = adapter
+        listRecycl.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
+        adapter.setOnItemClickListener(object : ListAdapter.onItemClickListener{
+            override fun onItemClick(position: Int) {
+
+                var nomListe = user.listActivite.get(position).titreListeToDo
+                val showListActivity = Intent(this@ChoixListActivity,ShowListActivity::class.java)
+                showListActivity.putExtra("liste", nomListe)
+                startActivity(showListActivity)
+            }
+
+
+        })
 
         val btnOk: Button = findViewById(R.id.btnOkNewList)
         btnOk.setOnClickListener {
 
-            newListe = Liste(listeName.text.toString(),ArrayList())
+            newListe = ListeToDo(listeName.text.toString(), ArrayList())
             user.listActivite.add(newListe)
+
+            listRecycl.adapter!!.notifyDataSetChanged()
+
             //Toast.makeText(this, user.listActivite.toString(), Toast.LENGTH_LONG).show()
         }
 
-        // TODO : écouter les click sur les différentes listes et ouvrir ShowListActivity en lui passant le nom de la liste en argument
-
-         /*         bout de code utile pour ça
-
-          val showListActivity = Intent(this,ShowListActivity::class.java)
-          choixListActivity.putExtra("liste", LeNomDeLaListeCliquée)
-          startActivity(showListActivity)
-
-        */
-        val listRecycl = findViewById<RecyclerView>(R.id.list) //création du recyclerView
-        listRecycl.adapter = ListAdapter(dataSet = provideDataSet())
-        listRecycl.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
-
     }
-    fun provideDataSet(): List<Liste> {
-        val result = mutableListOf<Liste>()
-        repeat(10) { intex ->
-            val list = Liste(
-                name = "Titre $intex",
-                listItem = ArrayList(),
-            )
-
-            result.add(list)
-        }
-        Log.d("myActivity",result.size.toString())
-        return result
-    }
-
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -81,9 +77,21 @@ class ChoixListActivity : AppCompatActivity() {
 
     }
 
+
+
     class ListAdapter(
-        private val dataSet: List<Liste>
+        private val dataSet: ArrayList<ListeToDo>
     ) : RecyclerView.Adapter<ChoixListActivity.ListAdapter.ItemViewHolder>() {
+
+        private lateinit var myListener : onItemClickListener
+
+        interface onItemClickListener{
+            fun onItemClick(position : Int)
+        }
+
+        fun setOnItemClickListener(listener : onItemClickListener){
+            myListener = listener
+        }
 
         override fun getItemCount(): Int = dataSet.size
 
@@ -91,7 +99,7 @@ class ChoixListActivity : AppCompatActivity() {
             val itemView =
                 LayoutInflater.from(parent.context).inflate(R.layout.list_layout, parent, false)
 
-            return ItemViewHolder(itemView = itemView)
+            return ItemViewHolder(itemView = itemView,myListener)
         }
 
         override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
@@ -99,12 +107,18 @@ class ChoixListActivity : AppCompatActivity() {
         }
 
 
-        class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        class ItemViewHolder(itemView: View, listener : onItemClickListener) : RecyclerView.ViewHolder(itemView) {
 
             private val textListe = itemView.findViewById<TextView>(R.id.textListe)
 
-            fun bind(list: Liste) {
-                textListe.text = list.name
+            fun bind(list: ListeToDo) {
+                textListe.text = list.titreListeToDo
+            }
+
+            init{
+                itemView.setOnClickListener {
+                    listener.onItemClick(adapterPosition)
+                }
             }
 
         }
