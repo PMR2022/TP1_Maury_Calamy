@@ -9,13 +9,17 @@ import android.util.Log
 import android.view.*
 import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
+import java.io.File
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var menuList: Menu
     private lateinit var preferences : SharedPreferences
     private lateinit var indicPseudo : EditText
+
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         Log.d("myActivity", "création")
@@ -24,15 +28,23 @@ class MainActivity : AppCompatActivity() {
         val btnOk : Button = findViewById(R.id.btnOk)
         btnOk.setOnClickListener {
             Log.d("myActivity", "appuiBtn")
+
             // On commence par modifier les préférences
             val editeur = preferences.edit()
             editeur.putString("Pseudo", indicPseudo.text.toString())
             editeur.commit()
+
+            // on met à jour le fichier json
+            var gson = Gson()
+            var jsonString = gson.toJson(ProfilListeToDo(indicPseudo.text.toString(), ArrayList()))
+
             // Et après on change d'activité
             val choixListActivity = Intent(this,ChoixListActivity::class.java)
             choixListActivity.putExtra("pseudo", indicPseudo.text.toString())
             startActivity(choixListActivity)
             Log.d("myActivity", "chgt Activité")
+
+
         }
 
 

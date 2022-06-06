@@ -7,22 +7,26 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
+import java.io.File
 
 class ChoixListActivity : AppCompatActivity() {
+
     private lateinit var user: ProfilListeToDo
     private lateinit var listeName: EditText
     private lateinit var newListe: ListeToDo
     private lateinit var listRecycl : RecyclerView
+    private lateinit var listeData : AllData // Cette variable contient la liste de tous les profils. On s'en sert pour serializer/désérializer
     override fun onCreate(savedInstanceState: Bundle?) {
+        listeData = deserialize() //lecture du fichier de données
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.choix_list_activity)
 
         listeName = findViewById(R.id.nouvelleList)
         val pseudo = intent.getStringExtra("pseudo").toString()
-        //Toast.makeText(this, pseudo, Toast.LENGTH_LONG).show() //test pseudo
 
-        // TODO : récupérer le user à partir du pseudo et l'afficher, pour l'instant je me contente d'en créer un vierge
-        user = ProfilListeToDo(pseudo, ArrayList())
+        user = getProfile(pseudo)
 
 
         var adapter = ListAdapter(dataSet = user.listActivite)
@@ -38,6 +42,7 @@ class ChoixListActivity : AppCompatActivity() {
                 var nomListe = user.listActivite.get(position).titreListeToDo
                 val showListActivity = Intent(this@ChoixListActivity,ShowListActivity::class.java)
                 showListActivity.putExtra("liste", nomListe)
+                showListActivity.putExtra("pseudo", pseudo)
                 startActivity(showListActivity)
             }
 
@@ -49,12 +54,32 @@ class ChoixListActivity : AppCompatActivity() {
 
             newListe = ListeToDo(listeName.text.toString(), ArrayList())
             user.listActivite.add(newListe)
+            serialize()
 
             listRecycl.adapter!!.notifyDataSetChanged()
 
             //Toast.makeText(this, user.listActivite.toString(), Toast.LENGTH_LONG).show()
         }
 
+    }
+
+    private fun getProfile(pseudo: String): ProfilListeToDo {
+
+        // Cette méthode permet d'extraire un profil de la liste de profils. Si le profil demandé n'existe pas, elle le crée
+        var res : ProfilListeToDo
+        res = ProfilListeToDo(pseudo, ArrayList())
+        var found = false
+        for (profil in listeData.listeProfils){
+            if (profil.name == pseudo){
+                found = true
+                res = profil
+            }
+        }
+
+        if(found == false){
+            listeData.listeProfils.add(res)
+        }
+        return(res)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -76,8 +101,6 @@ class ChoixListActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
 
     }
-
-
 
     class ListAdapter(
         private val dataSet: ArrayList<ListeToDo>
@@ -122,5 +145,30 @@ class ChoixListActivity : AppCompatActivity() {
             }
 
         }
+    }
+
+
+    fun ecrireFichier(txt: String){
+            File(this.filesDir, "Sauvegarde.txt").outputStream().use {
+            it.write(txt.toByteArray())
+        }
+    }
+
+     fun lireFichier(): String {
+         var recuperation = File(this.filesDir, "Sauvegarde.txt").bufferedReader().readText();
+         return(recuperation)
+     }
+
+    fun serialize(){
+        val gson = Gson()
+        var jsonString = gson.toJson(listeData)
+        ecrireFichier(jsonString)
+    }
+
+    fun deserialize(): AllData{
+        val data = lireFichier()
+        val gson = Gson()
+        var testModel = gson.fromJson(data, AllData::class.java)
+        return (testModel)
     }
 }
