@@ -22,7 +22,5 @@ class SettingActivity : AppCompatActivity() {
         var pseudo = preferences.getString("Pseudo","")
         indicPseudo.setText(pseudo)
         super.onStart()
-
-
     }
 }
