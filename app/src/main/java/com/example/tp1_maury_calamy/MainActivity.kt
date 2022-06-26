@@ -8,9 +8,8 @@ import android.preference.PreferenceManager
 import android.util.Log
 import android.view.*
 import android.widget.*
-import androidx.recyclerview.widget.RecyclerView
+import com.example.tp1_maury_calamy.DataClass.ProfilListeToDo
 import com.google.gson.Gson
-import java.io.File
 
 class MainActivity : AppCompatActivity() {
 
@@ -77,6 +76,9 @@ class MainActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
 
     }
+
+
+
 
 
 }
