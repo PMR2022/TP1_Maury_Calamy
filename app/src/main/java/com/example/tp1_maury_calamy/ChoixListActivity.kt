@@ -2,6 +2,7 @@ package com.example.tp1_maury_calamy
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -9,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import java.io.File
+import java.lang.Exception
 
 class ChoixListActivity : AppCompatActivity() {
 
@@ -149,15 +151,21 @@ class ChoixListActivity : AppCompatActivity() {
 
 
     fun ecrireFichier(txt: String){
-            File(this.filesDir, "Sauvegarde.txt").outputStream().use {
+            File(this.filesDir, "Sauvegar.txt").outputStream().use {
             it.write(txt.toByteArray())
         }
     }
 
-     fun lireFichier(): String {
-         var recuperation = File(this.filesDir, "Sauvegarde.txt").bufferedReader().readText();
-         return(recuperation)
-     }
+    fun lireFichier(): String {
+        var recuperation : String
+        try {
+            recuperation = File(this.filesDir, "Sauvegar.txt").bufferedReader().readText();
+        }
+        catch(e: Exception){ // pour prévenir d'un crash quand le fichier de sauvegarde n'existe pas
+            recuperation = "empty"
+        }
+        return(recuperation)
+    }
 
     fun serialize(){
         val gson = Gson()
@@ -168,7 +176,14 @@ class ChoixListActivity : AppCompatActivity() {
     fun deserialize(): AllData{
         val data = lireFichier()
         val gson = Gson()
-        var testModel = gson.fromJson(data, AllData::class.java)
+        var testModel : AllData
+        if (data == "empty"){
+            testModel = AllData(ArrayList())
+
+        }
+        else {
+            testModel = gson.fromJson(data, AllData::class.java)
+        }
         return (testModel)
     }
 }
