@@ -1,7 +1,11 @@
 package com.example.tp1_maury_calamy
 
+
 import android.content.Intent
+import android.content.Context
 import android.content.SharedPreferences
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.preference.PreferenceManager
@@ -24,7 +28,12 @@ class MainActivity : AppCompatActivity() {
         Log.d("myActivity", "création")
         indicPseudo = findViewById(R.id.indicPseudo) //Variable contenant le pseudo renseigné
         preferences = PreferenceManager.getDefaultSharedPreferences(this)
+
         val btnOk : Button = findViewById(R.id.btnOk)
+        val showBtn = checkInternet(this)
+        if(!showBtn) {
+            btnOk.isEnabled = false
+        }
         btnOk.setOnClickListener {
             Log.d("myActivity", "appuiBtn")
 
@@ -77,10 +86,20 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    fun checkInternet(context : Context) : Boolean {
+        val connectivityManager = context.getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
+        val network = connectivityManager.activeNetwork ?: return false
+        val activeNetwork = connectivityManager.getNetworkCapabilities(network) ?: return false
 
+        return if(activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) { // Si on est connecté en wifi -> on a internet
+            true
+        } else activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) // Sinon on retourne si on est connecté en 4g
 
-
-
+        }
 }
+
+
+
+
 
 
