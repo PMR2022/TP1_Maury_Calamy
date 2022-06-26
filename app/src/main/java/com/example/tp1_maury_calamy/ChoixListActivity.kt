@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import java.io.File
+import java.lang.Exception
 
 class ChoixListActivity : AppCompatActivity() {
 
@@ -155,7 +156,13 @@ class ChoixListActivity : AppCompatActivity() {
     }
 
      fun lireFichier(): String {
-         var recuperation = File(this.filesDir, "Sauvegarde.txt").bufferedReader().readText();
+         var recuperation : String
+         try {
+             recuperation = File(this.filesDir, "Sauvegarde.txt").bufferedReader().readText();
+         }
+         catch(e : Exception){
+             recuperation = ""
+         }
          return(recuperation)
      }
 
