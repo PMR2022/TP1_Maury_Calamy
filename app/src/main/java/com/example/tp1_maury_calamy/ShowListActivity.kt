@@ -133,7 +133,7 @@ class ShowListActivity: AppCompatActivity()  {
     }
 
     fun ecrireFichier(txt: String){
-        File(this.filesDir, "Sauvegar.txt").outputStream().use {
+        File(this.filesDir, "save.txt").outputStream().use {
             it.write(txt.toByteArray())
         }
     }
@@ -141,7 +141,7 @@ class ShowListActivity: AppCompatActivity()  {
     fun lireFichier(): String {
         var recuperation : String
         try {
-            recuperation = File(this.filesDir, "Sauvegar.txt").bufferedReader().readText();
+            recuperation = File(this.filesDir, "save.txt").bufferedReader().readText();
         }
         catch(e: Exception){ // pour prévenir d'un crash quand le fichier de sauvegarde n'existe pas
             recuperation = "empty"
