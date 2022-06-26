@@ -133,7 +133,7 @@ class ShowListActivity: AppCompatActivity()  {
     }
 
     fun ecrireFichier(txt: String){
-        File(this.filesDir, "Sauvegard.txt").outputStream().use {
+        File(this.filesDir, "save.txt").outputStream().use {
             it.write(txt.toByteArray())
         }
     }

@@ -150,7 +150,7 @@ class ChoixListActivity : AppCompatActivity() {
 
 
     fun ecrireFichier(txt: String){
-            File(this.filesDir, "Sauvegarde.txt").outputStream().use {
+            File(this.filesDir, "save.txt").outputStream().use {
             it.write(txt.toByteArray())
         }
     }
