@@ -141,10 +141,10 @@ class ShowListActivity: AppCompatActivity()  {
     fun lireFichier(): String {
         var recuperation : String
         try {
-            recuperation = File(this.filesDir, "Sauvegarde.txt").bufferedReader().readText();
+            recuperation = File(this.filesDir, "save.txt").bufferedReader().readText();
         }
-        catch(e : Exception){
-            recuperation = ""
+        catch(e: Exception){ // pour prévenir d'un crash quand le fichier de sauvegarde n'existe pas
+            recuperation = "empty"
         }
         return(recuperation)
     }
@@ -158,8 +158,14 @@ class ShowListActivity: AppCompatActivity()  {
     fun deserialize(): AllData{
         val data = lireFichier()
         val gson = Gson()
-        var testModel = gson.fromJson(data, AllData::class.java)
+        var testModel : AllData
+        if (data == "empty"){
+            testModel = AllData(ArrayList())
+
+        }
+        else {
+            testModel = gson.fromJson(data, AllData::class.java)
+        }
         return (testModel)
     }
-
 }
