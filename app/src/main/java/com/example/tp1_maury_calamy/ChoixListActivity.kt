@@ -1,81 +1,60 @@
 package com.example.tp1_maury_calamy
 
+import android.content.Context
+import android.content.Intent
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.os.Bundle
+import android.util.Log
+import android.view.*
+import android.widget.Button
+import android.widget.EditText
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-
+import androidx.core.content.ContextCompat.startActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.VERTICAL
+import com.example.tp1_maury_calamy.DataClass.listApi
+import com.example.tp1_maury_calamy.DataClass.listItem
+import com.example.tp1_maury_calamy.DataClass.listList
+import kotlinx.coroutines.*
 class ChoixListActivity : AppCompatActivity() {
-/*
-    private lateinit var user: ProfilListeToDo
-    private lateinit var listeName: EditText
-    private lateinit var newListe: ListeToDo
+
+
     private lateinit var listRecycl : RecyclerView
-    private lateinit var listeData : AllData // Cette variable contient la liste de tous les profils. On s'en sert pour serializer/désérializer
     override fun onCreate(savedInstanceState: Bundle?) {
-        listeData = deserialize() //lecture du fichier de données
+
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.choix_list_activity)
+        getListe()
+        Log.v("myActivity", "api passé")
 
-        listeName = findViewById(R.id.nouvelleList)
-        val pseudo = intent.getStringExtra("pseudo").toString()
-
-        user = getProfile(pseudo)
-
-
-        var adapter = ListAdapter(dataSet = user.listActivite)
-        listRecycl = findViewById<RecyclerView>(R.id.list) //création du recyclerView
-
-
-
-        listRecycl.adapter = adapter
-        listRecycl.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
-
-
-        adapter.setOnItemClickListener(object : ListAdapter.onItemClickListener{
-            override fun onItemClick(position: Int) {
-
-                var nomListe = user.listActivite.get(position).titreListeToDo
-                val showListActivity = Intent(this@ChoixListActivity,ShowListActivity::class.java)
-                showListActivity.putExtra("liste", nomListe)
-                showListActivity.putExtra("pseudo", pseudo)
-                startActivity(showListActivity)
-            }
-
-
-        })
 
         val btnOk: Button = findViewById(R.id.btnOkNewList)
         if(!checkInternet(this)) btnOk.isEnabled = false
         btnOk.setOnClickListener {
 
-            newListe = ListeToDo(listeName.text.toString(), ArrayList())
-            user.listActivite.add(newListe)
-            serialize()
+            
 
-            listRecycl.adapter!!.notifyDataSetChanged()
-
+            addlists()
+            getListe()
             //Toast.makeText(this, user.listActivite.toString(), Toast.LENGTH_LONG).show()
         }
 
     }
 
-    private fun getProfile(pseudo: String): ProfilListeToDo {
+    private val mainActivityScope = CoroutineScope(
+        SupervisorJob() + Dispatchers.Main
+    )
 
-        // Cette méthode permet d'extraire un profil de la liste de profils. Si le profil demandé n'existe pas, elle le crée
-        var res : ProfilListeToDo
-        res = ProfilListeToDo(pseudo, ArrayList())
-        var found = false
-        for (profil in listeData.listeProfils){
-            if (profil.name == pseudo){
-                found = true
-                res = profil
-            }
-        }
-
-        if(found == false){
-            listeData.listeProfils.add(res)
-        }
-        return(res)
+    override fun onDestroy() {
+        super.onDestroy()
+        mainActivityScope.cancel()
     }
+
+
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -98,86 +77,58 @@ class ChoixListActivity : AppCompatActivity() {
     }
 
     class ListAdapter(
-        private val dataSet: ArrayList<ListeToDo>
+        private val dataSet: listList
     ) : RecyclerView.Adapter<ChoixListActivity.ListAdapter.ItemViewHolder>() {
 
-        private lateinit var myListener : onItemClickListener
 
-        interface onItemClickListener{
-            fun onItemClick(position : Int)
-        }
-
-        fun setOnItemClickListener(listener : onItemClickListener){
-            myListener = listener
-        }
-
-        override fun getItemCount(): Int = dataSet.size
+        override fun getItemCount(): Int = dataSet.lists.size
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
             val itemView =
                 LayoutInflater.from(parent.context).inflate(R.layout.list_layout, parent, false)
 
-            return ItemViewHolder(itemView = itemView,myListener)
+            return ItemViewHolder(itemView = itemView)
         }
 
         override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
-            holder.bind(list = dataSet[position])
+            holder.bind(list = dataSet.lists[position])
         }
 
 
-        class ItemViewHolder(itemView: View, listener : onItemClickListener) : RecyclerView.ViewHolder(itemView) {
+        class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-            private val textListe = itemView.findViewById<TextView>(R.id.textListe)
+            private val textListe = itemView.findViewById<TextView>(R.id.textList)
 
-            fun bind(list: ListeToDo) {
-                textListe.text = list.titreListeToDo
+            fun bind(list: listApi) {
+                textListe.text = list.label
             }
 
-            init{
-                itemView.setOnClickListener {
-                    listener.onItemClick(adapterPosition)
+
+        }
+    }
+
+    private fun getListe(){
+        Log.v("myActivity","appel getlist")
+        mainActivityScope.launch {
+            val lists = DataProvider.getLists()
+            Log.v("myActivity",lists.toString())
+            val list = findViewById<RecyclerView>(R.id.list)
+            list.adapter = ListAdapter(dataSet = lists)
+            list.layoutManager = LinearLayoutManager(applicationContext, VERTICAL, false)
+            Log.v("myActivity","RecyclerView créé")
+        }
+    }
+    private fun addlists(){
+        Log.v("myActivity","appel addlists")
+        mainActivityScope.launch {
+            var textAjouter= findViewById<EditText>(R.id.nouvelleList)
+            if (textAjouter.text.toString()!=null) {
+                val lists = DataProvider.addList(textAjouter.text.toString())
+                Log.v("myActivity","ajoutList")
                 }
-            }
+            else Log.v("myActivity","text vide")
 
         }
-    }
-
-
-    fun ecrireFichier(txt: String){
-            File(this.filesDir, "save.txt").outputStream().use {
-            it.write(txt.toByteArray())
-        }
-    }
-
-    fun lireFichier(): String {
-        var recuperation : String
-        try {
-            recuperation = File(this.filesDir, "save.txt").bufferedReader().readText();
-        }
-        catch(e: Exception){ // pour prévenir d'un crash quand le fichier de sauvegarde n'existe pas
-            recuperation = "empty"
-        }
-        return(recuperation)
-    }
-
-    fun serialize(){
-        val gson = Gson()
-        var jsonString = gson.toJson(listeData)
-        ecrireFichier(jsonString)
-    }
-
-    fun deserialize(): AllData {
-        val data = lireFichier()
-        val gson = Gson()
-        var testModel : AllData
-        if (data == "empty"){
-            testModel = AllData(ArrayList())
-
-        }
-        else {
-            testModel = gson.fromJson(data, AllData::class.java)
-        }
-        return (testModel)
     }
 
     fun checkInternet(context : Context) : Boolean {
@@ -190,5 +141,5 @@ class ChoixListActivity : AppCompatActivity() {
             true
         } else activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) // Sinon on retourne si on est connecté en 4g
 
-    }*/
+    }
 }

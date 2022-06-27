@@ -66,26 +66,9 @@ class MainActivity : AppCompatActivity() {
             }
 
         }
-        getListe()
-    }
-    private val mainActivityScope = CoroutineScope(
-        SupervisorJob() + Dispatchers.Main
-    )
 
-    override fun onDestroy() {
-        super.onDestroy()
-        mainActivityScope.cancel()
     }
 
-    private fun getListe(){
-        Log.v("myActivity","appel getlist")
-        mainActivityScope.launch {
-            Log.v("myActivity","launch scope")
-            val listeReponse = DataProvider.getLists()
-            Log.v("myActivity","lancement api")
-            Log.v("myActivity",listeReponse.toString())
-        }
-    }
 
     override fun onStart() {
         var pseudo = preferences.getString("Pseudo","")
@@ -126,7 +109,14 @@ class MainActivity : AppCompatActivity() {
         } else activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) // Sinon on retourne si on est connecté en 4g
 
         }
+    private val mainActivityScope = CoroutineScope(
+        SupervisorJob() + Dispatchers.Main
+    )
 
+    override fun onDestroy() {
+        super.onDestroy()
+        mainActivityScope.cancel()
+    }
     private fun displayUserLists (pseudo : String, mdp : String){
         mainActivityScope.launch {
             var res  = -1

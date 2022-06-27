@@ -3,9 +3,13 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Travail/PMR/TP2/TP1_Maury_Calamy/app/src/main/res/layout/activity_settings.xml" value="0.16770833333333332" />
+        <entry key="..\:/Travail/PMR/TP2/TP1_Maury_Calamy/app/src/main/res/layout/activity_show_list.xml" value="0.16770833333333332" />
+        <entry key="..\:/Travail/PMR/TP2/TP1_Maury_Calamy/app/src/main/res/layout/choix_list_activity.xml" value="0.16770833333333332" />
+        <entry key="..\:/Travail/PMR/TP2/TP1_Maury_Calamy/app/src/main/res/layout/item_layout.xml" value="0.16770833333333332" />
+        <entry key="..\:/Travail/PMR/TP2/TP1_Maury_Calamy/app/src/main/res/layout/list_layout.xml" value="0.22" />
         <entry key="..\:/Users/Victor Calamy/Desktop/PMR/Sequence2/app/src/main/res/layout/activity_main.xml" value="0.17395833333333333" />
         <entry key="..\:/Users/Victor Calamy/Desktop/PMR/Sequence2/app/src/main/res/layout/activity_settings.xml" value="0.25" />
-        <entry key="..\:/Users/Victor Calamy/Desktop/PMR/Sequence2/app/src/main/res/layout/choix_list_activity.xml" value="0.18697916666666667" />
       </map>
     </option>
   </component>
