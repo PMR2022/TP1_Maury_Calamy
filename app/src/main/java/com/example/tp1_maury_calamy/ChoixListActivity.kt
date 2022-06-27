@@ -1,7 +1,11 @@
 package com.example.tp1_maury_calamy
 
+import android.content.Context
 import android.content.Intent
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -15,13 +19,13 @@ import java.io.File
 import java.lang.Exception
 
 class ChoixListActivity : AppCompatActivity() {
-
+/*
     private lateinit var user: ProfilListeToDo
     private lateinit var listeName: EditText
     private lateinit var newListe: ListeToDo
     private lateinit var listRecycl : RecyclerView
     private lateinit var listeData : AllData // Cette variable contient la liste de tous les profils. On s'en sert pour serializer/désérializer
-    /*override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreate(savedInstanceState: Bundle?) {
         listeData = deserialize() //lecture du fichier de données
 
         super.onCreate(savedInstanceState)
@@ -40,6 +44,8 @@ class ChoixListActivity : AppCompatActivity() {
 
         listRecycl.adapter = adapter
         listRecycl.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
+
+
         adapter.setOnItemClickListener(object : ListAdapter.onItemClickListener{
             override fun onItemClick(position: Int) {
 
@@ -54,6 +60,7 @@ class ChoixListActivity : AppCompatActivity() {
         })
 
         val btnOk: Button = findViewById(R.id.btnOkNewList)
+        if(!checkInternet(this)) btnOk.isEnabled = false
         btnOk.setOnClickListener {
 
             newListe = ListeToDo(listeName.text.toString(), ArrayList())
@@ -187,5 +194,17 @@ class ChoixListActivity : AppCompatActivity() {
             testModel = gson.fromJson(data, AllData::class.java)
         }
         return (testModel)
+    }
+
+    fun checkInternet(context : Context) : Boolean {
+        val connectivityManager = context.getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
+        val network = connectivityManager.activeNetwork ?: return false
+        val activeNetwork = connectivityManager.getNetworkCapabilities(network) ?: return false
+        Log.d("myActivity", "Testwifi")
+        return if(activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) { // Si on est connecté en wifi -> on a internet
+            Log.d("myActivity", "wifi")
+            true
+        } else activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) // Sinon on retourne si on est connecté en 4g
+
     }*/
 }

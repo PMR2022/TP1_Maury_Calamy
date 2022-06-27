@@ -19,12 +19,15 @@ import com.google.gson.Gson
 import retrofit2.Callback
 import retrofit2.Response
 import kotlinx.coroutines.*
+import com.example.tp1_maury_calamy.db.DataProviderSql
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var menuList: Menu
     private lateinit var preferences : SharedPreferences
     private lateinit var indicPseudo : EditText
+    private lateinit var indicPass : EditText
+    private val dataProviderSql : DataProviderSql by lazy {DataProviderSql(this.application)}
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -32,30 +35,43 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         Log.d("myActivity", "création")
         indicPseudo = findViewById(R.id.indicPseudo) //Variable contenant le pseudo renseigné
+        indicPass = findViewById(R.id.indicPass) //Variable contenant le mdp renseigné
         preferences = PreferenceManager.getDefaultSharedPreferences(this)
 
         val btnOk : Button = findViewById(R.id.btnOk)
-        val showBtn = checkInternet(this)
-        if(!showBtn) {
-            btnOk.isEnabled = false
-        }
+
         btnOk.setOnClickListener {
-            Log.d("myActivity", "appuiBtn")
+            val internetOn = checkInternet(this)
 
-            // On commence par modifier les préférences
-            val editeur = preferences.edit()
-            editeur.putString("Pseudo", indicPseudo.text.toString())
-            editeur.commit()
+            if(internetOn) {    // dans le cas où internet est up, on utilise l'api
 
-            // on met à jour le fichier json
-            var gson = Gson()
-            var jsonString = gson.toJson(ProfilListeToDo(indicPseudo.text.toString(), ArrayList()))
+                // On commence par modifier les préférences
+                val editeur = preferences.edit()
+                editeur.putString("Pseudo", indicPseudo.text.toString())
+                editeur.commit()
 
-            // Et après on change d'activité
-            val choixListActivity = Intent(this,ChoixListActivity::class.java)
-            choixListActivity.putExtra("pseudo", indicPseudo.text.toString())
-            startActivity(choixListActivity)
-            Log.d("myActivity", "chgt Activité")
+                // on met à jour le fichier json
+                var gson = Gson()
+                var jsonString =
+                    gson.toJson(ProfilListeToDo(indicPseudo.text.toString(), ArrayList()))
+
+                // Et après on change d'activité
+                val choixListActivity = Intent(this, ChoixListActivity::class.java)
+                choixListActivity.putExtra("pseudo", indicPseudo.text.toString())
+                startActivity(choixListActivity)
+            }
+
+            else{ //dans le cas où internet est down, on utilise la database
+
+                // On commence par modifier les préférences
+                val editeur = preferences.edit()
+                editeur.putString("Pseudo", indicPseudo.text.toString())
+                editeur.commit()
+
+                //On récupère les données de la database et on cahnge d'activité
+                displayUserLists(indicPseudo.text.toString(),indicPass.text.toString())
+
+            }
 
         }
 
@@ -115,6 +131,31 @@ class MainActivity : AppCompatActivity() {
         } else activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) // Sinon on retourne si on est connecté en 4g
 
         }
+
+    private fun displayUserLists (pseudo : String, mdp : String){
+        mainActivityScope.launch {
+            var res  = -1
+            runCatching {
+               res =  dataProviderSql.getUserId(pseudo,mdp)  //on va chercher l'id de l'user correspondant à ce pseudo et ce mot de passe
+            }.fold(
+                onSuccess = { items ->
+                    if(res>-1) { // si on trouve l'user dans la database, on lance l'activité choix liste en lui passant son id
+                        val choixListActivity = Intent(this@MainActivity, ChoixListActivity::class.java)
+                        choixListActivity.putExtra("id", res)
+                        startActivity(choixListActivity)
+                    }
+
+                    else{ // si on ne trouve pas l'user dans la database, on affiche un message d'erreur
+                        Toast.makeText(this@MainActivity,"Le pseudo ou le mot de passe est incorect",Toast.LENGTH_LONG).show()
+                    }
+                },
+                onFailure = {
+                    Log.e("MainActivity", "Fails -> $it")
+                }
+            )
+
+        }
+    }
 
 
 }

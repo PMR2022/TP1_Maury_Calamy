@@ -35,10 +35,10 @@
         android:layout_marginEnd="4dp"
         android:text="OK"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName" />
+        app:layout_constraintTop_toBottomOf="@+id/indicPass" />
 
     <EditText
-        android:id="@+id/editTextTextPersonName"
+        android:id="@+id/indicPass"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -53,5 +53,5 @@
         android:layout_height="wrap_content"
         android:text="Mot de passe"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/editTextTextPersonName" />
+        app:layout_constraintTop_toTopOf="@+id/indicPass" />
 </androidx.constraintlayout.widget.ConstraintLayout>

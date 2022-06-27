@@ -1,4 +1,4 @@
-package com.example.tp1_maury_calamy.db.Daos
+package com.example.tp1_maury_calamy.db
 
 import androidx.room.Dao
 import androidx.room.Insert
