@@ -17,21 +17,35 @@ import androidx.recyclerview.widget.RecyclerView.VERTICAL
 import com.example.tp1_maury_calamy.DataClass.listApi
 import com.example.tp1_maury_calamy.DataClass.listItem
 import com.example.tp1_maury_calamy.DataClass.listList
+import com.example.tp1_maury_calamy.db.DataProviderSql
+import com.example.tp1_maury_calamy.db.dataTypes.Lists
 import kotlinx.coroutines.*
+import java.lang.Exception
+
 class ChoixListActivity : AppCompatActivity() {
 
 
     private lateinit var listRecycl : RecyclerView
+    private lateinit var userHash : String
+    private val myDataProvider : DataProvider2  by lazy { DataProvider2(this.application) }
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.choix_list_activity)
+        userHash = intent.getStringExtra("hash").toString()
+        val btnOk: Button = findViewById(R.id.btnOkNewList)
+
+        val internetOk = checkInternet(this)
+        if(!internetOk) btnOk.isEnabled = false
+
+
         getListe()
         Log.v("myActivity", "api passé")
         getItem1113()
 
-        val btnOk: Button = findViewById(R.id.btnOkNewList)
-        if(!checkInternet(this)) btnOk.isEnabled = false
+
+
         btnOk.setOnClickListener {
             var text : String =  findViewById<EditText>(R.id.indicList).text.toString()
             addlists(text)
@@ -119,12 +133,13 @@ class ChoixListActivity : AppCompatActivity() {
     private fun getListe(){
         Log.v("myActivity","appel getlist")
         mainActivityScope.launch {
-            val lists = DataProvider.getLists()
-            Log.v("myActivity",lists.toString())
             val list = findViewById<RecyclerView>(R.id.list)
+            val lists = myDataProvider.getLists(userHash)
+            Log.v("myActivity", "la liste : $lists")
             list.adapter = ListAdapter(dataSet = lists)
             list.layoutManager = LinearLayoutManager(applicationContext, VERTICAL, false)
             Log.v("myActivity","RecyclerView créé")
+
         }
     }
     private fun addlists(text: String) {
@@ -138,6 +153,7 @@ class ChoixListActivity : AppCompatActivity() {
 
         }
     }
+
 
     fun checkInternet(context : Context) : Boolean {
         val connectivityManager = context.getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager

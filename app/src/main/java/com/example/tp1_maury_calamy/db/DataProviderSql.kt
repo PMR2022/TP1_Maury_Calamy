@@ -8,7 +8,7 @@ import com.example.tp1_maury_calamy.db.dataTypes.Lists
 class DataProviderSql(app : Application) {
     private val database = Room.databaseBuilder(
         app,
-        DataBase::class.java, "database-name"
+        DataBase::class.java, "sequence2"
     ).build()
 
     private val SqlDao = database.sqlDao()
@@ -17,12 +17,20 @@ class DataProviderSql(app : Application) {
         return SqlDao.getUserId(name, pass)
     }
 
+    suspend fun getUserHash(name : String, pass : String): String  {
+        return SqlDao.getUserHash(name, pass)
+    }
+
     suspend fun getLists(idUser : Int) : List<Lists>{
         return SqlDao.getLists(idUser)
     }
 
     suspend fun getItems(idList : Int) : List<Item>{
         return SqlDao.getItems(idList)
+    }
+
+    suspend fun saveOrUpdateLists (list : List<Lists>){
+        SqlDao.saveOrUpdateLists(list)
     }
 
 }

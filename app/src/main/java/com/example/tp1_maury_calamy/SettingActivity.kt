@@ -44,6 +44,9 @@ class SettingActivity : AppCompatActivity() {
         var pseudo = preferences.getString("Pseudo","")
         var url = preferences.getString("url","")
         if (url == ""){
+            val editeur = preferences.edit()
+            editeur.putString("url", "http://tomnab.fr/todo-api/")
+            editeur.commit()
             url == "http://tomnab.fr/todo-api/"
         }
 
