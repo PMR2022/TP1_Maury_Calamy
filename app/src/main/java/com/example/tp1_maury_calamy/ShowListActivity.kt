@@ -34,7 +34,7 @@ class ShowListActivity: AppCompatActivity()  {
         }
 
 
-
+        Log.v("myActivity", "onCreateFini")
     }
 
 
@@ -68,7 +68,10 @@ class ShowListActivity: AppCompatActivity()  {
 
 
 
-        override fun getItemCount(): Int = dataSet.listItemApi.size
+        override fun getItemCount(): Int {
+            if(dataSet.listItemApi!=null) {return dataSet.listItemApi.size}
+            return 0
+        }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
             val itemView =
@@ -116,12 +119,13 @@ class ShowListActivity: AppCompatActivity()  {
             Log.v("myActivity","RecyclerView Item créé")
         }
     }
+
     private fun addItem(idListe:Int, text: String) {
-        Log.v("myActivity","appel addlists")
+            Log.v("myActivity","appel addItem")
         mainActivityScope.launch {
             if (text.toString()!=null) {
                 val lists = DataProvider.addItem(idListe, text)
-                Log.v("myActivity","ajoutList")
+                Log.v("myActivity","ajout Item")
             }
             else Log.v("myActivity","text vide")
 

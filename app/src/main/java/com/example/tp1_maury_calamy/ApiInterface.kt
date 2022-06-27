@@ -21,7 +21,7 @@ interface ApiInterface {
 
     @Headers("hash: 1ae544e6fdef4e71d2a2c3797e8cad13")
     @POST("lists/{idList}/items")
-    suspend fun createItem(@Path("idList") idList:Any ,@Query("label") listName: Any) : ItemApi
+    suspend fun createItem(@Path("idList") idList:Any ,@Query("label") itemName: Any) : ItemApi
 
     @Headers("hash: 1ae544e6fdef4e71d2a2c3797e8cad13")
     @PUT("lists/{idList}/items/{idItem}")
