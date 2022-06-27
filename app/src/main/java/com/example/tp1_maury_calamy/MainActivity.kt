@@ -12,6 +12,7 @@ import android.preference.PreferenceManager
 import android.util.Log
 import android.view.*
 import android.widget.*
+import com.example.tp1_maury_calamy.DataClass.authentification
 import kotlinx.coroutines.*
 import com.example.tp1_maury_calamy.db.DataProviderSql
 
@@ -41,7 +42,9 @@ class MainActivity : AppCompatActivity() {
             val internetOn = checkInternet(this)
 
             if(internetOn) {    // dans le cas où internet est up, on utilise l'api
-
+                val pseudo = findViewById<EditText>(R.id.indicPseudo).text.toString()
+                val password =findViewById<EditText>(R.id.indicPass).text.toString()
+                auth(pseudo, password)
 
                 // on met à jour le fichier json
 
@@ -133,6 +136,22 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun auth(pseudo:String,password:String){
+
+        mainActivityScope.launch {
+            try{
+                val intent = Intent(applicationContext, ChoixListActivity::class.java)
+                val hash = dataProvider.auth(pseudo,password).hash
+                Log.v("myActivity", "authentification réussi")
+                intent.putExtra("hash", hash)
+                startActivity(intent)
+            }
+            catch(exception:Exception){
+                Log.v("myActivity", "pb authentification")
+
+            }
+        }
+    }
 }
 
 

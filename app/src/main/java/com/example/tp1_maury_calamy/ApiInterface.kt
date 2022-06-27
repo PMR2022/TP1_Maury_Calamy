@@ -1,34 +1,27 @@
 package com.example.tp1_maury_calamy
-import com.example.tp1_maury_calamy.DataClass.ItemApi
-import com.example.tp1_maury_calamy.DataClass.listList
-import com.example.tp1_maury_calamy.DataClass.listApi
-import com.example.tp1_maury_calamy.DataClass.listItem
+import com.example.tp1_maury_calamy.DataClass.*
 import retrofit2.http.*
 
 
 interface ApiInterface {
-    @Headers("hash: 1ae544e6fdef4e71d2a2c3797e8cad13")
     @GET("lists")
-    suspend fun getList() : listList
+    suspend fun getList(@Header("hash") hash : String) : listList
 
-    @Headers("hash: 1ae544e6fdef4e71d2a2c3797e8cad13")
     @GET("lists/{idList}/items")
-    suspend fun getItems(@Path("idList") idList: Any): listItem
+    suspend fun getItems(@Header("hash") hash : String, @Path("idList") idList: Any): listItem
 
-    @Headers("hash: 1ae544e6fdef4e71d2a2c3797e8cad13")
     @GET("lists/1113/items")
-    suspend fun getItems1113(): listItem
+    suspend fun getItems1113(@Header("hash") hash : String): listItem
 
-    @Headers("hash: 1ae544e6fdef4e71d2a2c3797e8cad13")
     @POST("lists")
-    suspend fun createList(@Query("label") listName: Any) : listApi
+    suspend fun createList(@Header("hash") hash : String,@Query("label") listName: Any) : listApi
 
-    @Headers("hash: 1ae544e6fdef4e71d2a2c3797e8cad13")
     @POST("lists/{idList}/items")
-    suspend fun createItem(@Path("idList") idList:Any ,@Query("label") itemName: Any) : ItemApi
+    suspend fun createItem(@Header("hash") hash : String, @Path("idList") idList:Any ,@Query("label") itemName: Any) : ItemApi
 
-    @Headers("hash: 1ae544e6fdef4e71d2a2c3797e8cad13")
     @PUT("lists/{idList}/items/{idItem}")
-    suspend fun check(@Path("idList") idList:Any,@Path("idItem") idItem: Any, @Query("check") checked : Any)
+    suspend fun check(@Header("hash") hash : String, @Path("idList") idList:Any,@Path("idItem") idItem: Any, @Query("check") checked : Any)
 
+    @POST("authenticate")
+    suspend fun auth(@Query("user")login:String,@Query("password")password:String) : authentification
 }

@@ -3,10 +3,7 @@ package com.example.tp1_maury_calamy
 import android.app.Application
 import android.util.Log
 import androidx.room.Room
-import com.example.tp1_maury_calamy.DataClass.ItemApi
-import com.example.tp1_maury_calamy.DataClass.listApi
-import com.example.tp1_maury_calamy.DataClass.listItem
-import com.example.tp1_maury_calamy.DataClass.listList
+import com.example.tp1_maury_calamy.DataClass.*
 import com.example.tp1_maury_calamy.db.DataBase
 import com.example.tp1_maury_calamy.db.dataTypes.Lists
 import retrofit2.Retrofit
@@ -32,12 +29,12 @@ class DataProvider2(app : Application) {
 
     private val SqlDao = database.sqlDao()
 
-    suspend fun getLists(userHash : String) : listList {
+    suspend fun getLists(hash : String) : listList {
         Log.v("debug",SqlDao.printList().toString())
         var  userId = 0
         return try {
             Log.v("debug","retre dans fct")
-            val lists = service.getList()
+            val lists = service.getList(hash)
             // On enregistre les données dans la base de données
             val listForDb = TypeTransform(lists, userId)
             Log.v("debug","ok avant save db")
@@ -53,12 +50,13 @@ class DataProvider2(app : Application) {
     suspend fun getUserHash(name : String, pass : String): String  {
         return SqlDao.getUserHash(name, pass)
     }
-    suspend fun getItems1113() : listItem = service.getItems1113()
-    suspend fun getItems(idList:Int) : listItem = service.getItems(idList)
-    suspend fun addList(listName:String) : listApi = service.createList(listName)
-    suspend fun addItem(idList : Int,itemName:String) : ItemApi = service.createItem(idList,itemName)
-    suspend fun check(idList:Int,idItem:Int,checked:Boolean) = service.check(idList,idItem,checked)
+    suspend fun getItems1113(hash: String) :  listItem = DataProvider.service.getItems1113(hash)
+    suspend fun getItems(hash: String, idList:Int) : listItem = DataProvider.service.getItems(hash, idList)
+    suspend fun addList(hash: String ,listName:String) : listApi = DataProvider.service.createList(hash, listName)
+    suspend fun addItem(hash: String, idList : Int,itemName:String) : ItemApi = DataProvider.service.createItem(hash,idList,itemName)
+    suspend fun check(hash: String, idList:Int,idItem:Int,checked:Boolean) = DataProvider.service.check(hash,idList,idItem,checked)
     suspend fun getUserIdByHash(hash : String) : Int = SqlDao.getUserIdByHash(hash).toInt()
+    suspend fun auth(login: String, password: String): authentification = service.auth(login, password)
     fun TypeTransform(lists : listList, userId : Int) : List<Lists>{
         // Cette fonction sert à transformer un objet de type "listList" en List<Lists>  utilisable par la database SQLite
         var res : List<Lists> = listOf()

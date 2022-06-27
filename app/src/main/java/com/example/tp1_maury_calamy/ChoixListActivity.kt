@@ -33,23 +33,23 @@ class ChoixListActivity : AppCompatActivity() {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.choix_list_activity)
-        userHash = intent.getStringExtra("hash").toString()
+        var hash = intent.getStringExtra("hash").toString()
         val btnOk: Button = findViewById(R.id.btnOkNewList)
 
         val internetOk = checkInternet(this)
         if(!internetOk) btnOk.isEnabled = false
 
 
-        getListe()
+        getListe(hash)
         Log.v("myActivity", "api passé")
-        getItem1113()
+        //getItem1113(hash)
 
 
 
         btnOk.setOnClickListener {
             var text : String =  findViewById<EditText>(R.id.indicList).text.toString()
-            addlists(text)
-            getListe()
+            addlists(hash, text)
+            getListe(hash)
             //Toast.makeText(this, user.listActivite.toString(), Toast.LENGTH_LONG).show()
         }
 
@@ -122,19 +122,19 @@ class ChoixListActivity : AppCompatActivity() {
 
         }
     }
-    private fun getItem1113(){ //debug pour resoudre le pb d'affichage des items
+    private fun getItem1113(hash : String){ //debug pour resoudre le pb d'affichage des items
         Log.v("myActivity","appel getItem")
         mainActivityScope.launch {
-            val lists = DataProvider.getItems1113()
+            val lists = DataProvider.getItems1113(hash)
             Log.v("myActivity",lists.toString())
 
         }
     }
-    private fun getListe(){
+    private fun getListe(hash: String){
         Log.v("myActivity","appel getlist")
         mainActivityScope.launch {
             val list = findViewById<RecyclerView>(R.id.list)
-            val lists = myDataProvider.getLists(userHash)
+            val lists = myDataProvider.getLists(hash)
             Log.v("myActivity", "la liste : $lists")
             list.adapter = ListAdapter(dataSet = lists)
             list.layoutManager = LinearLayoutManager(applicationContext, VERTICAL, false)
@@ -142,11 +142,11 @@ class ChoixListActivity : AppCompatActivity() {
 
         }
     }
-    private fun addlists(text: String) {
+    private fun addlists(hash : String,text: String) {
         Log.v("myActivity","appel addlists")
         mainActivityScope.launch {
             if (text.toString()!=null) {
-                val lists = DataProvider.addList(text)
+                val lists = DataProvider.addList(hash,text)
                 Log.v("myActivity","ajoutList")
                 }
             else Log.v("myActivity","text vide")
