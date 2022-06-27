@@ -36,8 +36,6 @@ class ChoixListActivity : AppCompatActivity() {
         if(!checkInternet(this)) btnOk.isEnabled = false
         btnOk.setOnClickListener {
 
-            
-
             addlists()
             getListe()
             //Toast.makeText(this, user.listActivite.toString(), Toast.LENGTH_LONG).show()
