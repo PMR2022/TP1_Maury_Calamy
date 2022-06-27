@@ -2,7 +2,10 @@ package com.example.tp1_maury_calamy
 
 
 
-import com.example.tp1_maury_calamy.DataClass.listActivity
+import com.example.tp1_maury_calamy.DataClass.ItemApi
+import com.example.tp1_maury_calamy.DataClass.listApi
+import com.example.tp1_maury_calamy.DataClass.listList
+import com.example.tp1_maury_calamy.DataClass.listItem
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.create
@@ -17,6 +20,10 @@ object DataProvider {
 
     val service = retrofit.create<ApiInterface>()
 
-    suspend fun getLists() : listActivity = service.getList()
+    suspend fun getLists() :  listList = service.getList()
+    suspend fun getItems(idList:Int) :  listItem = service.getItems(idList)
+    suspend fun setList(listName:String) : listApi = service.createList(listName)
+    suspend fun setItem(idList : Int,itemName:String) : ItemApi = service.createItem(idList,itemName)
+    suspend fun check(idList:Int,idItem:Int,checked:Boolean) = service.check(idList,idItem,checked)
 
 }
