@@ -69,7 +69,7 @@ class ShowListActivity: AppCompatActivity()  {
 
 
         override fun getItemCount(): Int {
-            if(dataSet.listItemApi!=null) {return dataSet.listItemApi.size}
+            if(dataSet.listItem!=null) {return dataSet.listItem.size}
             return 0
         }
 
@@ -81,7 +81,7 @@ class ShowListActivity: AppCompatActivity()  {
         }
 
         override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
-            holder.bind(item = dataSet.listItemApi[position])
+            holder.bind(item = dataSet.listItem[position])
         }
 
 

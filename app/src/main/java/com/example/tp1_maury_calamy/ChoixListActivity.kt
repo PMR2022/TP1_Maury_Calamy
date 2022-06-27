@@ -28,7 +28,7 @@ class ChoixListActivity : AppCompatActivity() {
         setContentView(R.layout.choix_list_activity)
         getListe()
         Log.v("myActivity", "api passé")
-
+        getItem1113()
 
         val btnOk: Button = findViewById(R.id.btnOkNewList)
         if(!checkInternet(this)) btnOk.isEnabled = false
@@ -108,7 +108,14 @@ class ChoixListActivity : AppCompatActivity() {
 
         }
     }
+    private fun getItem1113(){ //debug pour resoudre le pb d'affichage des items
+        Log.v("myActivity","appel getItem")
+        mainActivityScope.launch {
+            val lists = DataProvider.getItems1113()
+            Log.v("myActivity",lists.toString())
 
+        }
+    }
     private fun getListe(){
         Log.v("myActivity","appel getlist")
         mainActivityScope.launch {

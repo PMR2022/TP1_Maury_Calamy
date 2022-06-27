@@ -16,6 +16,10 @@ interface ApiInterface {
     suspend fun getItems(@Path("idList") idList: Any): listItem
 
     @Headers("hash: 1ae544e6fdef4e71d2a2c3797e8cad13")
+    @GET("lists/1113/items")
+    suspend fun getItems1113(): listItem
+
+    @Headers("hash: 1ae544e6fdef4e71d2a2c3797e8cad13")
     @POST("lists")
     suspend fun createList(@Query("label") listName: Any) : listApi
 
