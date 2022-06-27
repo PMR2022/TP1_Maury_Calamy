@@ -4,4 +4,4 @@ import com.example.tp1_maury_calamy.DataClass.ItemToDo
 
 data class ListeToDo (
     var id : Int,
-    var titreListeToDo: String)
+    var label: String)

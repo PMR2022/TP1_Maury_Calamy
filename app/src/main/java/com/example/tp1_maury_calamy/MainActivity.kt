@@ -59,6 +59,7 @@ class MainActivity : AppCompatActivity() {
                 val choixListActivity = Intent(this, ChoixListActivity::class.java)
                 choixListActivity.putExtra("pseudo", indicPseudo.text.toString())
                 startActivity(choixListActivity)
+                getListe()
             }
 
             else{ //dans le cas où internet est down, on utilise la database
@@ -74,14 +75,6 @@ class MainActivity : AppCompatActivity() {
             }
 
         }
-
-        val apiInterface = ApiInterface.create().getList()
-        Log.v("myActivity", "lancement API" )
-        mainActivityScope.launch {
-            val listItem = apiInterface
-            Log.v("myActivity", listItem.toString())
-        }
-
     }
     private val mainActivityScope = CoroutineScope(
         SupervisorJob() + Dispatchers.Main
@@ -90,6 +83,16 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         mainActivityScope.cancel()
+    }
+
+    private fun getListe(){
+        Log.v("myActivity","appel getlist")
+        mainActivityScope.launch {
+            Log.v("myActivity","launch scope")
+            val list = DataProvider.getLists()
+            Log.v("myActivity","lancement api")
+            Log.v("myActivity",list.toString())
+        }
     }
 
     override fun onStart() {

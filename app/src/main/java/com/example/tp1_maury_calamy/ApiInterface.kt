@@ -4,24 +4,11 @@ import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
+import retrofit2.http.Headers
 
 interface ApiInterface {
+    @Headers("hash: 1ae544e6fdef4e71d2a2c3797e8cad13")
+    @GET("lists")
+    suspend fun getList() : List<ListeToDo>
 
-    @GET("lists?hash=1ae544e6fdef4e71d2a2c3797e8cad13")
-    fun getList() : Call<List<ListeToDo>>
-
-    companion object {
-
-        var BASE_URL = "http://tomnab.fr/todo-api/"
-
-        fun create() : ApiInterface {
-
-            val retrofit = Retrofit.Builder()
-                .addConverterFactory(GsonConverterFactory.create())
-                .baseUrl(BASE_URL)
-                .build()
-            return retrofit.create(ApiInterface::class.java)
-
-        }
-    }
 }
