@@ -2,6 +2,7 @@ package com.example.tp1_maury_calamy
 
 
 import com.example.tp1_maury_calamy.DataClass.ListeToDo
+import com.example.tp1_maury_calamy.DataClass.list
 import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -23,6 +24,6 @@ object DataProvider {
 
     val service = retrofit.create<ApiInterface>()
 
-    suspend fun getLists() : List<ListeToDo> = service.getList()
+    suspend fun getLists() : list = service.getList()
 
 }

@@ -14,7 +14,6 @@ import android.view.*
 import android.widget.*
 import com.example.tp1_maury_calamy.DataClass.ListeToDo
 import retrofit2.Call
-import com.example.tp1_maury_calamy.DataClass.ProfilListeToDo
 import com.google.gson.Gson
 import retrofit2.Callback
 import retrofit2.Response
@@ -51,15 +50,12 @@ class MainActivity : AppCompatActivity() {
                 editeur.commit()
 
                 // on met à jour le fichier json
-                var gson = Gson()
-                var jsonString =
-                    gson.toJson(ProfilListeToDo(indicPseudo.text.toString(), ArrayList()))
 
                 // Et après on change d'activité
                 val choixListActivity = Intent(this, ChoixListActivity::class.java)
                 choixListActivity.putExtra("pseudo", indicPseudo.text.toString())
                 startActivity(choixListActivity)
-                getListe()
+
             }
 
             else{ //dans le cas où internet est down, on utilise la database
@@ -75,6 +71,7 @@ class MainActivity : AppCompatActivity() {
             }
 
         }
+        getListe()
     }
     private val mainActivityScope = CoroutineScope(
         SupervisorJob() + Dispatchers.Main
