@@ -1,16 +1,6 @@
 package com.example.tp1_maury_calamy
 
-import android.content.Intent
-import android.os.Bundle
-import android.view.*
-import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.example.tp1_maury_calamy.DataClass.ListeToDo
-import com.google.gson.Gson
-import java.io.File
-import java.lang.Exception
 
 class ShowListActivity: AppCompatActivity()  {
    /* private lateinit var listeToDo : ListeToDo

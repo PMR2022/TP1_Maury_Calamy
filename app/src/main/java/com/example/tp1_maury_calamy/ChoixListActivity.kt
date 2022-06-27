@@ -1,22 +1,6 @@
 package com.example.tp1_maury_calamy
 
-import android.content.Context
-import android.content.Intent
-import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
-import android.os.Bundle
-import android.util.Log
-import android.view.*
-import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-
-import com.example.tp1_maury_calamy.DataClass.ListeToDo
-
-import com.google.gson.Gson
-import java.io.File
-import java.lang.Exception
 
 class ChoixListActivity : AppCompatActivity() {
 /*

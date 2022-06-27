@@ -12,11 +12,6 @@ import android.preference.PreferenceManager
 import android.util.Log
 import android.view.*
 import android.widget.*
-import com.example.tp1_maury_calamy.DataClass.ListeToDo
-import retrofit2.Call
-import com.google.gson.Gson
-import retrofit2.Callback
-import retrofit2.Response
 import kotlinx.coroutines.*
 import com.example.tp1_maury_calamy.db.DataProviderSql
 
@@ -86,9 +81,9 @@ class MainActivity : AppCompatActivity() {
         Log.v("myActivity","appel getlist")
         mainActivityScope.launch {
             Log.v("myActivity","launch scope")
-            val list = DataProvider.getLists()
+            val listeReponse = DataProvider.getLists()
             Log.v("myActivity","lancement api")
-            Log.v("myActivity",list.toString())
+            Log.v("myActivity",listeReponse.toString())
         }
     }
 
