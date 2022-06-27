@@ -21,7 +21,7 @@ class ChoixListActivity : AppCompatActivity() {
     private lateinit var newListe: ListeToDo
     private lateinit var listRecycl : RecyclerView
     private lateinit var listeData : AllData // Cette variable contient la liste de tous les profils. On s'en sert pour serializer/désérializer
-    override fun onCreate(savedInstanceState: Bundle?) {
+    /*override fun onCreate(savedInstanceState: Bundle?) {
         listeData = deserialize() //lecture du fichier de données
 
         super.onCreate(savedInstanceState)
@@ -187,5 +187,5 @@ class ChoixListActivity : AppCompatActivity() {
             testModel = gson.fromJson(data, AllData::class.java)
         }
         return (testModel)
-    }
+    }*/
 }

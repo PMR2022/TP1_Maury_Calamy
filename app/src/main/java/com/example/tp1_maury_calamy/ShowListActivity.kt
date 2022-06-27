@@ -19,7 +19,7 @@ class ShowListActivity: AppCompatActivity()  {
     private lateinit var itemDescription : EditText
     private lateinit var newItem : ItemToDo
     private lateinit var listeData : AllData // Cette variable contient la liste de tous les profils. On s'en sert pour serializer/désérializer
-
+    /*
     override fun onCreate(savedInstanceState: Bundle?) {
         listeData = deserialize() //lecture du fichier de données
 
@@ -170,5 +170,5 @@ class ShowListActivity: AppCompatActivity()  {
             testModel = gson.fromJson(data, AllData::class.java)
         }
         return (testModel)
-    }
+    }*/
 }
