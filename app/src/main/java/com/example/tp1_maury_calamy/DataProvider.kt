@@ -23,7 +23,7 @@ object DataProvider {
     suspend fun getLists() :  listList = service.getList()
     suspend fun getItems(idList:Int) :  listItem = service.getItems(idList)
     suspend fun addList(listName:String) : listApi = service.createList(listName)
-    suspend fun setItem(idList : Int,itemName:String) : ItemApi = service.createItem(idList,itemName)
+    suspend fun addItem(idList : Int,itemName:String) : ItemApi = service.createItem(idList,itemName)
     suspend fun check(idList:Int,idItem:Int,checked:Boolean) = service.check(idList,idItem,checked)
 
 }

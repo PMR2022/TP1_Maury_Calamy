@@ -2,28 +2,35 @@ package com.example.tp1_maury_calamy
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.Button
 import android.widget.CheckBox
+import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tp1_maury_calamy.DataClass.ItemApi
 import com.example.tp1_maury_calamy.DataClass.listItem
 import com.google.gson.Gson
+import kotlinx.coroutines.*
 
 class ShowListActivity: AppCompatActivity()  {
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
+        Log.v("myActivity", "Arrivée dans ShowListActivity")
+        val idListe = getIntent().getExtras()!!.getInt("idListe")
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_show_list)
-
+        getItem(idListe)
 
 
         val btnOk : Button = findViewById(R.id.btnOkNewItem)
         btnOk.setOnClickListener {
-
+            var text : String =  findViewById<EditText>(R.id.indicItem).text.toString()
+            addItem(idListe,text)
+            getItem(idListe)
         }
 
 
@@ -89,5 +96,36 @@ class ShowListActivity: AppCompatActivity()  {
     }
 
 
+    private val mainActivityScope = CoroutineScope(
+        SupervisorJob() + Dispatchers.Main
+    )
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mainActivityScope.cancel()
+    }
+
+    private fun getItem(idListe : Int){
+        Log.v("myActivity","appel getItem")
+        mainActivityScope.launch {
+            val lists = DataProvider.getItems(idListe)
+            Log.v("myActivity",lists.toString())
+            val list = findViewById<RecyclerView>(R.id.listItem)
+            list.adapter = ItemAdapter(dataSet = lists)
+            list.layoutManager = LinearLayoutManager(applicationContext, RecyclerView.VERTICAL, false)
+            Log.v("myActivity","RecyclerView Item créé")
+        }
+    }
+    private fun addItem(idListe:Int, text: String) {
+        Log.v("myActivity","appel addlists")
+        mainActivityScope.launch {
+            if (text.toString()!=null) {
+                val lists = DataProvider.addItem(idListe, text)
+                Log.v("myActivity","ajoutList")
+            }
+            else Log.v("myActivity","text vide")
+
+        }
+    }
 
 }

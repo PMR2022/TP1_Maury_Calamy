@@ -7,7 +7,7 @@
 
 
     <EditText
-        android:id="@+id/nouvelleList"
+        android:id="@+id/indicList"
         android:layout_width="312dp"
         android:layout_height="47dp"
         android:ems="10"

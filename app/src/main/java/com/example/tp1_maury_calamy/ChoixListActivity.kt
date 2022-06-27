@@ -11,7 +11,6 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.VERTICAL
@@ -25,7 +24,6 @@ class ChoixListActivity : AppCompatActivity() {
     private lateinit var listRecycl : RecyclerView
     override fun onCreate(savedInstanceState: Bundle?) {
 
-
         super.onCreate(savedInstanceState)
         setContentView(R.layout.choix_list_activity)
         getListe()
@@ -35,8 +33,8 @@ class ChoixListActivity : AppCompatActivity() {
         val btnOk: Button = findViewById(R.id.btnOkNewList)
         if(!checkInternet(this)) btnOk.isEnabled = false
         btnOk.setOnClickListener {
-
-            addlists()
+            var text : String =  findViewById<EditText>(R.id.indicList).text.toString()
+            addlists(text)
             getListe()
             //Toast.makeText(this, user.listActivite.toString(), Toast.LENGTH_LONG).show()
         }
@@ -90,6 +88,12 @@ class ChoixListActivity : AppCompatActivity() {
 
         override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
             holder.bind(list = dataSet.lists[position])
+            holder.itemView.setOnClickListener {
+                val context = holder.itemView.context
+                val intent = Intent(context, ShowListActivity::class.java)
+                intent.putExtra("idListe", dataSet.lists[position].id)
+                context.startActivity(intent)
+            }
         }
 
 
@@ -116,12 +120,11 @@ class ChoixListActivity : AppCompatActivity() {
             Log.v("myActivity","RecyclerView créé")
         }
     }
-    private fun addlists(){
+    private fun addlists(text: String) {
         Log.v("myActivity","appel addlists")
         mainActivityScope.launch {
-            var textAjouter= findViewById<EditText>(R.id.nouvelleList)
-            if (textAjouter.text.toString()!=null) {
-                val lists = DataProvider.addList(textAjouter.text.toString())
+            if (text.toString()!=null) {
+                val lists = DataProvider.addList(text)
                 Log.v("myActivity","ajoutList")
                 }
             else Log.v("myActivity","text vide")
