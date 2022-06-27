@@ -26,14 +26,14 @@ class ChoixListActivity : AppCompatActivity() {
 
 
     private lateinit var listRecycl : RecyclerView
-    private lateinit var userHash : String
+    private lateinit var hash : String
     private val myDataProvider : DataProvider2  by lazy { DataProvider2(this.application) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.choix_list_activity)
-        var hash = intent.getStringExtra("hash").toString()
+        hash = intent.getStringExtra("hash").toString()
         val btnOk: Button = findViewById(R.id.btnOkNewList)
 
         val internetOk = checkInternet(this)
@@ -87,7 +87,8 @@ class ChoixListActivity : AppCompatActivity() {
     }
 
     class ListAdapter(
-        private val dataSet: listList
+        private val dataSet: listList,
+        private val hash : String
     ) : RecyclerView.Adapter<ChoixListActivity.ListAdapter.ItemViewHolder>() {
 
 
@@ -106,6 +107,7 @@ class ChoixListActivity : AppCompatActivity() {
                 val context = holder.itemView.context
                 val intent = Intent(context, ShowListActivity::class.java)
                 intent.putExtra("idListe", dataSet.lists[position].id)
+                intent.putExtra("hash", hash)
                 context.startActivity(intent)
             }
         }
@@ -136,7 +138,7 @@ class ChoixListActivity : AppCompatActivity() {
             val list = findViewById<RecyclerView>(R.id.list)
             val lists = myDataProvider.getLists(hash)
             Log.v("myActivity", "la liste : $lists")
-            list.adapter = ListAdapter(dataSet = lists)
+            list.adapter = ListAdapter(dataSet = lists, hash=hash)
             list.layoutManager = LinearLayoutManager(applicationContext, VERTICAL, false)
             Log.v("myActivity","RecyclerView créé")
 
